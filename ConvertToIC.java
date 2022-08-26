@@ -1,11 +1,9 @@
 import java.io.*;
-import java.util.LinkedHashMap;
-import java.util.Scanner;
+import java.util.*;
 
 public class ConvertToIC {
     static int symidx=0;
     static LinkedHashMap<String,TableRow> SYMTAB = new LinkedHashMap<>();
-
     public static void main(String[] args) throws IOException {
         int lc=0;
         String inp,out;
@@ -74,12 +72,25 @@ public class ConvertToIC {
         }
         FRead.close();
         FWrite.close();
+        CreateSym();
 
         System.out.println("Content added with");
         Scanner sc = new Scanner(new File("IC.txt"));
         while (sc.hasNextLine()){
             System.out.println(sc.nextLine());
         }
+    }
+    public static void CreateSym() throws IOException {
+        BufferedWriter FWrite = new BufferedWriter(new FileWriter("symtab.txt"));
+        Iterator<String> it = SYMTAB.keySet().iterator();
+
+        while (it.hasNext()){
+            String key = it.next().toString();
+            TableRow value = SYMTAB.get(key);
+
+            FWrite.write(value.getIdx()+"\t"+value.getSym()+"\t"+value.getAddr()+"\n");
+        }
+        FWrite.close();
     }
 
 }
